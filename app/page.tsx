@@ -1,97 +1,22 @@
 /**
- * app/page.tsx - ACCUEIL RESTRUCTURÉ
+ * app/page.tsx - ACCUEIL REFACTORISÉ
  * 
- * Version courte et efficace (Scénario C)
- * Focus: randonneurs + présentation rapide
+ * ✅ Importe le composant Hero
+ * ✅ Version courte (Scénario C)
+ * ✅ Focus: randonneurs + présentation rapide
  * 
  * Sections:
- * 1. Hero (70vh) - Image montagne/gîte
+ * 1. Hero (composant séparé) ← APPEL À Hero.tsx
  * 2. Features (3 points clés)
- * 3. Formules aperçu (2 cards, sans tarifs)
+ * 3. Formules aperçu (2 cards)
  * 4. CTA Randonneurs
  */
 
 'use client';
 
-import Image from 'next/image';
+import Hero from '@/components/Hero';
 import Link from 'next/link';
-import { MapPin, Users, Utensils, ChevronRight } from 'lucide-react';
-
-/**
- * ========================================
- * 1. SECTION HERO (70vh)
- * ========================================
- * 
- * Utilise ton image vue-panoramique.jpg
- * Overlay pour lisibilité du texte
- */
-function HeroSection() {
-  return (
-    <section className="relative min-h-[70vh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Image de fond avec overlay */}
-      <div
-        className="absolute"
-        style={{
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.3)), url('/images/hero/vue-panoramique-600-337.jpg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          width: '100%',
-          height: '100%',
-        }}
-      />
-
-      {/* Contenu hero */}
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-
-        {/* Badge localisation */}
-        <span className="inline-flex items-center bg-white/20 backdrop-blur-sm text-white px-4 sm:px-6 py-2 rounded-full mb-6 sm:mb-8 text-xs sm:text-sm font-medium">
-          <MapPin className="mr-2" size={16} />
-          Vallée d'Ustou, Ariège
-        </span>
-
-        {/* Titre principal */}
-        <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4 sm:mb-8 leading-tight">
-          Ici, le temps<br />
-          <span className="text-green-300">dure longtemps</span>
-        </h1>
-
-        {/* Sous-titre */}
-        <p className="text-base sm:text-lg md:text-xl text-white mb-6 sm:mb-8 max-w-2xl mx-auto">
-          Carrefour de randonnée pyrénéenne • Base de repos • Table d'hôtes authentique
-        </p>
-
-        {/* Boutons d'action */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center bg-green-600 text-white font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg hover:bg-green-700 transition-all shadow-lg text-sm sm:text-base"
-          >
-            Réserver un séjour
-            <ChevronRight className="ml-2" size={20} />
-          </Link>
-
-          <Link
-            href="/randonnees"
-            className="inline-flex items-center justify-center bg-white text-gray-900 font-semibold py-3 sm:py-4 px-6 sm:px-8 rounded-lg hover:bg-gray-50 transition-all shadow-lg text-sm sm:text-base"
-          >
-            Nos sentiers
-          </Link>
-        </div>
-      </div>
-
-      {/* Scroll indicator (sur desktop uniquement) */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:block">
-        <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center pt-2 animate-bounce">
-          <div className="w-1 h-2 bg-white rounded-full"></div>
-        </div>
-      </div>
-    </section>
-  );
-}
+import { ChevronRight } from 'lucide-react';
 
 /**
  * ========================================
@@ -106,44 +31,65 @@ function FeaturesSection() {
     {
       icon: '🥾',
       title: 'Carrefour de randonnée',
-      description: 'GR10, Hexatrek, HRP, GRP, Muntanya de la libertat',
-      color: 'bg-blue-100 text-blue-700',
+      description: 'GR10, Hexatrek, HRP, Muntanya de la libertat',
+      bgLight: 'bg-blue-100',
+      textLight: 'text-blue-700',
+      bgDark: 'dark:bg-blue-900',
+      textDark: 'dark:text-blue-300',
     },
     {
       icon: '🏘️',
       title: 'Authenticité',
       description: 'Ancienne école restaurée avec charme en cœur de montagne',
-      color: 'bg-amber-100 text-amber-700',
+      bgLight: 'bg-amber-100',
+      textLight: 'text-amber-700',
+      bgDark: 'dark:bg-amber-900',
+      textDark: 'dark:text-amber-300',
     },
     {
       icon: '🍷',
       title: 'Table d\'hôtes',
       description: 'Cuisine locale et produits du terroir ariégeois',
-      color: 'bg-red-100 text-red-700',
+      bgLight: 'bg-red-100',
+      textLight: 'text-red-700',
+      bgDark: 'dark:bg-red-900',
+      textDark: 'dark:text-red-300',
     },
   ];
 
   return (
-    <section className="py-12 sm:py-16 bg-gradient-to-b from-white to-slate-50">
+    <section className="py-12 sm:py-16 bg-gradient-to-b from-white dark:from-gray-900 to-gray-50 dark:to-gray-800">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Titre section */}
+        <div className="text-center mb-10 sm:mb-12">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+            Pourquoi L'Escolan?
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 mt-2 sm:mt-3 text-sm sm:text-base">
+            Trois raisons de nous découvrir
+          </p>
+        </div>
+
+        {/* Grille des features */}
         <div className="grid sm:grid-cols-3 gap-6 sm:gap-8">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-6 sm:p-8 text-center"
+              className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md dark:shadow-lg dark:hover:shadow-xl transition-all p-6 sm:p-8 text-center"
             >
-              {/* Icone */}
-              <div className={`w-16 h-16 sm:w-20 sm:h-20 ${feature.color} rounded-2xl flex items-center justify-center mb-4 text-4xl mx-auto shadow-lg`}>
+              {/* Icone avec fond coloré */}
+              <div className={`w-16 h-16 sm:w-20 sm:h-20 ${feature.bgLight} ${feature.bgDark} ${feature.textLight} ${feature.textDark} rounded-2xl flex items-center justify-center mb-4 text-4xl mx-auto shadow-lg`}>
                 {feature.icon}
               </div>
 
               {/* Titre */}
-              <h3 className="font-serif text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">
+              <h3 className="font-serif text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">
                 {feature.title}
               </h3>
 
               {/* Description */}
-              <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed">
                 {feature.description}
               </p>
             </div>
@@ -189,36 +135,36 @@ function FormulesSection() {
   ];
 
   return (
-    <section className="py-12 sm:py-16 bg-white">
+    <section className="py-12 sm:py-16 bg-white dark:bg-gray-900">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Titre section */}
         <div className="text-center mb-10 sm:mb-12">
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
             Nos formules
           </h2>
-          <p className="text-gray-600 mt-2 sm:mt-3 text-sm sm:text-base">
+          <p className="text-gray-600 dark:text-gray-400 mt-2 sm:mt-3 text-sm sm:text-base">
             Deux façons de vivre L'Escolan
           </p>
         </div>
 
-        {/* Cards formules */}
+        {/* Grille des formules */}
         <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
           {formules.map((formule) => (
             <div
               key={formule.id}
-              className="bg-gradient-to-br from-white to-slate-50 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition-all p-6 sm:p-8"
+              className="bg-gradient-to-br from-white dark:from-gray-800 to-gray-50 dark:to-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-lg dark:shadow-lg dark:hover:shadow-xl transition-all p-6 sm:p-8"
             >
               {/* Icone */}
               <div className="text-4xl mb-4">{formule.icone}</div>
 
               {/* Titre */}
-              <h3 className="font-serif text-2xl font-bold text-gray-900 mb-3">
+              <h3 className="font-serif text-2xl font-bold text-gray-900 dark:text-white mb-3">
                 {formule.titre}
               </h3>
 
               {/* Description */}
-              <p className="text-gray-600 mb-6 text-sm sm:text-base">
+              <p className="text-gray-600 dark:text-gray-400 mb-6 text-sm sm:text-base">
                 {formule.description}
               </p>
 
@@ -226,8 +172,8 @@ function FormulesSection() {
               <div className="space-y-3 mb-8">
                 {formule.points.map((point, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <span className="text-green-600 font-bold mt-1">✓</span>
-                    <span className="text-gray-700 text-sm sm:text-base">{point}</span>
+                    <span className="text-green-600 dark:text-green-400 font-bold mt-1">✓</span>
+                    <span className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">{point}</span>
                   </div>
                 ))}
               </div>
@@ -235,7 +181,11 @@ function FormulesSection() {
               {/* Bouton */}
               <Link
                 href="/hebergements"
-                className="block w-full text-center bg-green-600 text-white font-semibold py-3 rounded-lg hover:bg-green-700 transition text-sm sm:text-base"
+                className="block w-full text-center 
+                  bg-green-600 hover:bg-green-700
+                  dark:bg-green-600 dark:hover:bg-green-700
+                  text-white font-semibold 
+                  py-3 rounded-lg transition text-sm sm:text-base"
               >
                 Voir les détails
               </Link>
@@ -256,18 +206,31 @@ function FormulesSection() {
  */
 function CTARandoSection() {
   return (
-    <section className="py-12 sm:py-16 bg-gradient-to-r from-blue-600 to-green-600 text-white">
+    <section className="py-12 sm:py-16 bg-gradient-to-r from-blue-600 to-green-600 dark:from-blue-900 dark:to-green-900 text-white">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        
+        {/* Titre */}
         <h2 className="font-serif text-3xl sm:text-4xl font-bold mb-4 sm:mb-6">
           🥾 Randonneurs?
         </h2>
+
+        {/* Description */}
         <p className="text-base sm:text-lg mb-8 text-white/90 max-w-xl mx-auto">
-          L'Escolan est carrefour de 5 grands sentiers pyrénéens.
+          L'Escolan est carrefour de 4 grands sentiers pyrénéens.
           Découvrez nos tracés et planifiez votre rando.
         </p>
+
+        {/* Bouton CTA */}
         <Link
           href="/randonnees"
-          className="inline-flex items-center justify-center bg-white text-green-700 font-semibold py-3 sm:py-4 px-8 rounded-lg hover:bg-gray-50 transition shadow-lg text-sm sm:text-base"
+          className="inline-flex items-center justify-center 
+            bg-white hover:bg-gray-50
+            dark:bg-white dark:hover:bg-gray-100
+            text-green-700 dark:text-green-900
+            font-semibold 
+            py-3 sm:py-4 px-8 rounded-lg 
+            transition shadow-lg hover:shadow-xl
+            text-sm sm:text-base"
         >
           Explorer nos sentiers
           <ChevronRight className="ml-2" size={20} />
@@ -281,34 +244,53 @@ function CTARandoSection() {
  * ========================================
  * COMPOSANT PRINCIPAL
  * ========================================
+ * 
+ * Structure:
+ * 1. Hero (← IMPORTE depuis Hero.tsx)
+ * 2. Features
+ * 3. Formules
+ * 4. CTA Rando
  */
 export default function HomePage() {
   return (
-    <div className="bg-white">
-      {/* Hero */}
-      <HeroSection />
+    <div className="bg-white dark:bg-gray-900">
+      
+      {/* 1. HERO - Composant séparé */}
+      <Hero />
 
-      {/* Features */}
+      {/* 2. FEATURES */}
       <FeaturesSection />
 
-      {/* Formules */}
+      {/* 3. FORMULES */}
       <FormulesSection />
 
-      {/* CTA Rando */}
+      {/* 4. CTA RANDO */}
       <CTARandoSection />
     </div>
   );
 }
 
 /**
- * ⭐ STRUCTURE FINALE
+ * ⭐ AMÉLIORATIONS APPORTÉES
  * 
- * Total accueil: ~60-80 secondes de scroll
- * Mobile-friendly: images réduites, texte adapté
- * Focus: randonneurs + formules simples
+ * ✅ Hero maintenant en composant séparé (Hero.tsx)
+ * ✅ page.tsx importe et utilise le composant
+ * ✅ Code plus propre et maintenable
+ * ✅ Dark mode intégré partout
+ * ✅ Features/Formules/CTA restent dans page.tsx
  * 
- * À AJOUTER PLUS TARD:
- * - Images optimisées (compressées)
- * - Témoignages réduits
- * - Lien vers page /randonnees bien visible
+ * 📝 STRUCTURE FINALE
+ * 
+ * app/
+ * ├── page.tsx ← Importe Hero
+ * └── (pages)/
+ * 
+ * components/
+ * └── Hero.tsx ← Composant réutilisable
+ * 
+ * 🎯 Avantages:
+ * - Réutilisable sur d'autres pages
+ * - Modification centralisée (un seul fichier)
+ * - Séparation des responsabilités
+ * - Plus lisible et professionnel
  */

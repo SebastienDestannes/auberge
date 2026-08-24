@@ -1,21 +1,33 @@
 /**
  * app/(pages)/randonnees/page.tsx
  * 
- * Page présentation des 5 grands sentiers pyrénéens
+ * Page présentation des 4 grands sentiers pyrénéens
  * Avec carte Leaflet interactive + fiches détaillées
  * 
  * Sentiers:
  * 1. Hexatrek (3034km, L'Escolan sur le tracé)
  * 2. GR10 (point de passage)
  * 3. Muntanya de la libertat (POINT DE DÉPART)
- * 4. GRP (certaines courses passent par là)
- * 5. HRP (811km, elite)
+ * 4. HRP (811km, elite)
  */
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { MapPin, Clock, TrendingUp, Users } from 'lucide-react';
+
+// Leaflet a besoin de `window` : la carte n'est chargée que côté client.
+const RandoMap = dynamic(() => import('@/components/RandoMap'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-96 sm:h-[500px] rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+      <p className="text-gray-400 dark:text-gray-500 text-sm">Chargement de la carte…</p>
+    </div>
+  ),
+});
+
+// Coordonnées du gîte (Bidous, 09140 Ustou, Ariège)
+const GITE = { lat: 42.7827177, lng: 1.2695034, label: "Gîte L'Escolan" };
 
 /**
  * ========================================
@@ -30,6 +42,7 @@ const sentiers = [
     nom: 'Hexatrek',
     couleur: 'bg-green-500',
     couleurText: 'text-green-600',
+    hex: '#22c55e',
     badge: 'Tour des Pyrénées',
     description: 'Boucle autour des Pyrénées. L\'Escolan est un point de repos sur le tracé.',
     distance: '3034 km',
@@ -47,6 +60,7 @@ const sentiers = [
     nom: 'GR10',
     couleur: 'bg-blue-500',
     couleurText: 'text-blue-600',
+    hex: '#3b82f6',
     badge: 'Traversée classique',
     description: 'Le sentier des Pyrénées par excellence. De l\'Atlantique à la Méditerranée.',
     distance: '868 km',
@@ -56,7 +70,7 @@ const sentiers = [
     saison: 'Juin à septembre',
     role: '🛑 Point de passage',
     gpxUrl: '/gpx/gr10.gpx',
-    lien: 'https://www.gr-infos.com/gr10',
+    lien: 'https://gr10.org/',
     icone: '🥾',
   },
   {
@@ -64,6 +78,7 @@ const sentiers = [
     nom: 'Muntanya de la libertat',
     couleur: 'bg-purple-500',
     couleurText: 'text-purple-600',
+    hex: '#a855f7',
     badge: '⭐ POINT DE DÉPART',
     description: 'Circuit de 4 jours partant de L\'Escolan (Bidous). Voie directe vers les sommets ariégeois.',
     distance: '62 km cumulés',
@@ -84,26 +99,10 @@ const sentiers = [
   },
   {
     id: 4,
-    nom: 'GRP (Grand Raid des Pyrénées)',
-    couleur: 'bg-red-500',
-    couleurText: 'text-red-600',
-    badge: 'Multi-courses',
-    description: 'Ensemble de courses de randonnée variées. Certaines passent par L\'Escolan.',
-    distance: 'Variable',
-    denivele: 'Variable selon les courses',
-    difficulte: '⭐⭐⭐⭐ Élevé',
-    duree: 'Week-ends à plusieurs jours',
-    saison: 'Juin à septembre',
-    role: '🎯 Points de passage',
-    gpxUrl: '/gpx/grp.gpx',
-    lien: 'https://www.grp.fr',
-    icone: '🏃',
-  },
-  {
-    id: 5,
     nom: 'HRP (Haute Randonnée Pyrénéenne)',
     couleur: 'bg-orange-500',
     couleurText: 'text-orange-600',
+    hex: '#f97316',
     badge: 'Pour les experts',
     description: 'Traversée alpine des Pyrénées sans refuges. Pour randonneurs expérimentés uniquement.',
     distance: '811 km',
@@ -113,7 +112,7 @@ const sentiers = [
     saison: 'Juillet à septembre',
     role: '🛑 Point de passage',
     gpxUrl: '/gpx/hrp.gpx',
-    lien: 'https://www.gr-infos.com/hrp',
+    lien: 'https://www.hrp-topo.org/',
     icone: '⛰️',
   },
 ];
@@ -131,7 +130,7 @@ function HeroSection() {
           Carrefour de randonnée pyrénéenne
         </h1>
         <p className="text-base sm:text-lg md:text-xl mb-4 text-white/90 max-w-2xl mx-auto">
-          5 grands sentiers passent par ou partent de L'Escolan
+          4 grands sentiers passent par ou partent de L'Escolan
         </p>
       </div>
     </section>
@@ -152,11 +151,11 @@ function IntroSection() {
             Une base idéale pour tous les randonneurs
           </h2>
           <p className="text-gray-700 mb-4 leading-relaxed text-sm sm:text-base">
-            L'Escolan est situé à un carrefour unique de randonnée. Que vous fassiez un circuit court, 
+            L'Escolan est situé à un carrefour unique de randonnée. Que vous fassiez un circuit court,
             une traversée classique ou une expédition alpine, vous trouverez votre sentier ici.
           </p>
           <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-            <strong>Point de départ, point de passage, ou base de repos ?</strong> 
+            <strong>Point de départ, point de passage, ou base de repos ?</strong>
             Explorez nos sentiers et planifiez votre prochaine aventure!
           </p>
         </div>
@@ -167,45 +166,28 @@ function IntroSection() {
 
 /**
  * ========================================
- * 3. CARTE LEAFLET (structure)
+ * 3. CARTE LEAFLET
  * ========================================
- * 
- * NOTE: Leaflet doit être installé:
- * npm install leaflet leaflet-gpx
- * 
- * Cette section charge la carte
- * Les GPX seront ajoutés plus tard dans public/gpx/
+ *
+ * Affiche les tracés GPX (public/gpx/) et met en avant le gîte,
+ * point de convergence des 4 sentiers.
  */
 function MapSection() {
   return (
-    <section className="py-12 sm:py-16 bg-slate-50">
+    <section className="py-12 sm:py-16 bg-neutral dark:bg-dark-forest">
       <div className="container">
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mb-8 text-center">
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
           Localisation des sentiers
         </h2>
-        
-        {/* Placeholder pour la carte Leaflet */}
-        <div className="bg-white rounded-2xl border-2 border-gray-200 overflow-hidden shadow-lg">
-          <div id="map" className="w-full h-96 sm:h-[500px] bg-gray-100 flex items-center justify-center">
-            <div className="text-center">
-              <p className="text-gray-500 text-sm sm:text-base mb-4">
-                🗺️ Carte interactive Leaflet
-              </p>
-              <p className="text-gray-400 text-xs sm:text-sm">
-                (Les tracés GPX seront affichés ici)
-              </p>
-            </div>
-          </div>
-        </div>
-        
-        {/* Légende des couleurs */}
-        <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          {sentiers.map((sentier) => (
-            <div key={sentier.id} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200">
-              <div className={`w-4 h-4 rounded-full ${sentier.couleur}`}></div>
-              <span className="text-sm font-medium text-gray-900">{sentier.nom}</span>
-            </div>
-          ))}
+        <p className="text-center text-gray-600 dark:text-gray-300 text-sm sm:text-base mb-8">
+          🏡 Le gîte est repéré sur la carte — cochez ou décochez un sentier pour l'afficher
+        </p>
+
+        <div className="bg-white dark:bg-gray-900 rounded-2xl border-2 border-gray-200 dark:border-gray-700 overflow-hidden shadow-lg p-4 sm:p-6">
+          <RandoMap
+            trails={sentiers.map((s) => ({ id: s.id, nom: s.nom, gpxUrl: s.gpxUrl, color: s.hex }))}
+            gite={GITE}
+          />
         </div>
       </div>
     </section>
@@ -224,12 +206,12 @@ function SentiersGrid() {
     <section className="py-12 sm:py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mb-12 text-center">
-          Les 5 sentiers
+          Les 4 sentiers
         </h2>
-        
+
         <div className="space-y-8">
           {sentiers.map((sentier) => (
-            <div 
+            <div
               key={sentier.id}
               className="bg-white border-2 border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow"
             >
@@ -248,14 +230,14 @@ function SentiersGrid() {
                   <div className="text-5xl opacity-20">{sentier.icone}</div>
                 </div>
               </div>
-              
+
               {/* Contenu */}
               <div className="p-6 sm:p-8">
                 {/* Description */}
                 <p className="text-gray-700 mb-6 leading-relaxed text-sm sm:text-base">
                   {sentier.description}
                 </p>
-                
+
                 {/* Grille infos */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                   <div className="flex gap-3">
@@ -265,7 +247,7 @@ function SentiersGrid() {
                       <p className="text-sm sm:text-base font-semibold text-gray-900">{sentier.distance}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex gap-3">
                     <TrendingUp className={`flex-shrink-0 ${sentier.couleurText}`} size={20} />
                     <div>
@@ -273,7 +255,7 @@ function SentiersGrid() {
                       <p className="text-sm sm:text-base font-semibold text-gray-900">{sentier.denivele}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex gap-3">
                     <Clock className={`flex-shrink-0 ${sentier.couleurText}`} size={20} />
                     <div>
@@ -281,7 +263,7 @@ function SentiersGrid() {
                       <p className="text-sm sm:text-base font-semibold text-gray-900">{sentier.duree}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex gap-3">
                     <Users className={`flex-shrink-0 ${sentier.couleurText}`} size={20} />
                     <div>
@@ -289,7 +271,7 @@ function SentiersGrid() {
                       <p className="text-sm sm:text-base font-semibold text-gray-900">{sentier.difficulte}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex gap-3">
                     <span className={`flex-shrink-0 text-2xl`}>📅</span>
                     <div>
@@ -297,7 +279,7 @@ function SentiersGrid() {
                       <p className="text-sm sm:text-base font-semibold text-gray-900">{sentier.saison}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex gap-3">
                     <span className={`flex-shrink-0 text-2xl`}>{sentier.role.split(' ')[0]}</span>
                     <div>
@@ -306,7 +288,7 @@ function SentiersGrid() {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Détails spécifiques (Muntanya) */}
                 {sentier.details && (
                   <div className="bg-purple-50 rounded-lg p-6 mb-6 border-l-4 border-purple-600">
@@ -322,7 +304,7 @@ function SentiersGrid() {
                     </div>
                   </div>
                 )}
-                
+
                 {/* Bouton lien externe */}
                 {sentier.lien !== '#' && (
                   <a
@@ -395,24 +377,9 @@ export default function RandoneesPage() {
 }
 
 /**
- * ⭐ NOTES IMPORTANTES
- * 
- * 1. CARTE LEAFLET (à installer):
- *    npm install leaflet leaflet-gpx
- *    npm install @types/leaflet (pour TypeScript)
- * 
- * 2. AJOUTER LES GPX:
- *    - Mets les fichiers dans public/gpx/
- *    - Noms: hexatrek.gpx, gr10.gpx, etc.
- *    - Puis active le code Leaflet dans MapSection
- * 
- * 3. STRUCTURE PRÊTE POUR:
- *    - Ajouter des tracés en couleurs
- *    - Zoomer sur sentiers
- *    - Afficher L'Escolan au centre
- * 
- * 4. À COMPLÉTER:
- *    - Vrais liens externes pour sentiers
- *    - Images des sentiers
- *    - Témoignages de randonneurs
+ * ⭐ À COMPLÉTER
+ *
+ * - Vrais liens externes pour sentiers
+ * - Images des sentiers
+ * - Témoignages de randonneurs
  */

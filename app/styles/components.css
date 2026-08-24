@@ -1,0 +1,264 @@
+/**
+ * app/styles/components.css
+ *
+ * Classes réutilisables pour les éléments visuels du site.
+ * Composées avec @apply (Tailwind) pour éviter les longues chaînes
+ * de classes directement dans le JSX. Voir theme.css pour les tokens.
+ *
+ * Tout est déclaré dans @layer components pour que les utilitaires
+ * Tailwind (hidden, w-full, etc. combinés dans le JSX) gardent
+ * toujours la priorité en cas de conflit.
+ */
+
+@layer components {
+
+/* ========================================
+   BOUTONS
+   ======================================== */
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2
+    bg-primary hover:bg-primary-700 dark:bg-primary-400 dark:hover:bg-primary
+    text-white font-semibold text-sm sm:text-base
+    py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all
+    focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-dark-forest;
+}
+
+.btn-accent {
+  @apply inline-flex items-center justify-center gap-2
+    bg-accent hover:bg-accent-600 dark:bg-accent-600 dark:hover:bg-accent-400
+    text-white font-semibold text-sm sm:text-base
+    py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all
+    focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 dark:focus:ring-offset-dark-forest;
+}
+
+.btn-header {
+  @apply inline-flex items-center justify-center
+    bg-primary hover:bg-primary-700 dark:bg-primary-400 dark:hover:bg-primary
+    text-white font-medium text-sm
+    px-6 py-2.5 rounded-lg shadow-lg transition-all
+    focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2
+    border-2 border-primary text-primary hover:bg-primary hover:text-white
+    dark:border-primary-400 dark:text-primary-400 dark:hover:bg-primary-400 dark:hover:text-dark-forest
+    font-semibold text-sm sm:text-base
+    py-3 px-8 rounded-lg transition-all
+    focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+}
+
+/* ========================================
+   NAVIGATION
+   ======================================== */
+
+.nav-link {
+  @apply px-3 py-2 text-sm font-medium
+    text-gray-700 dark:text-gray-300
+    hover:text-primary dark:hover:text-accent-400
+    hover:bg-primary-50 dark:hover:bg-gray-800
+    rounded-lg transition-colors
+    focus:outline-none focus:ring-2 focus:ring-primary;
+}
+
+.nav-link-mobile {
+  @apply block px-3 py-2 font-medium
+    text-gray-700 dark:text-gray-300
+    hover:text-primary dark:hover:text-accent-400
+    hover:bg-primary-50 dark:hover:bg-gray-800
+    rounded-lg transition-colors
+    focus:outline-none focus:ring-2 focus:ring-primary;
+}
+
+.nav-link.active,
+.nav-link-mobile.active {
+  @apply text-primary dark:text-accent-400 bg-primary-50 dark:bg-gray-800;
+}
+
+/* ========================================
+   ICÔNES SOCIALES
+   ======================================== */
+
+.social-icon {
+  @apply w-9 h-9 flex items-center justify-center text-lg
+    rounded-lg text-gray-600 dark:text-gray-300
+    hover:text-white hover:bg-primary dark:hover:bg-primary-400
+    transition-all
+    focus:outline-none focus:ring-2 focus:ring-primary;
+}
+
+.social-icon-mobile {
+  @apply flex-1 min-w-fit flex items-center justify-center gap-2
+    px-3 py-2 text-sm font-medium
+    rounded-lg text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800
+    hover:text-white hover:bg-primary dark:hover:bg-primary-400
+    transition-all
+    focus:outline-none focus:ring-2 focus:ring-primary;
+}
+
+/* ========================================
+   LOGO
+   ======================================== */
+
+.logo {
+  @apply flex items-center space-x-3;
+}
+
+.logo-icon {
+  @apply w-12 h-12 flex items-center justify-center text-2xl
+    bg-gradient-to-br from-primary to-primary-700 dark:from-primary-400 dark:to-primary
+    rounded-xl shadow-lg
+    group-hover:scale-105 transition-transform;
+}
+
+.logo-text {
+  @apply hidden sm:block;
+}
+
+.logo-title {
+  @apply font-serif text-xl font-bold text-gray-900 dark:text-white;
+}
+
+.logo-subtitle {
+  @apply text-xs font-medium text-primary dark:text-accent-400;
+}
+
+/* ========================================
+   MENU BURGER
+   ======================================== */
+
+.menu-burger {
+  @apply lg:hidden p-2 rounded-lg
+    text-gray-700 dark:text-gray-300
+    hover:bg-gray-100 dark:hover:bg-gray-800
+    transition-colors
+    focus:outline-none focus:ring-2 focus:ring-primary;
+}
+
+/* ========================================
+   CONTENEURS
+   ======================================== */
+
+.container {
+  @apply w-full mx-auto px-4 md:px-8;
+  max-width: var(--container-max);
+}
+
+.section {
+  @apply py-12 sm:py-16;
+}
+
+.section-compact {
+  @apply py-8 sm:py-12;
+}
+
+.section-large {
+  @apply py-16 sm:py-20;
+}
+
+.section-light {
+  @apply bg-white dark:bg-gray-900;
+}
+
+.section-neutral {
+  @apply bg-neutral dark:bg-dark-forest;
+}
+
+.section-accent {
+  @apply bg-primary dark:bg-primary-800 text-white;
+}
+
+/* ========================================
+   CARTES
+   ======================================== */
+
+.card {
+  @apply bg-white dark:bg-gray-800
+    border border-gray-100 dark:border-gray-700
+    rounded-2xl shadow-sm dark:shadow-lg;
+}
+
+.card-hover {
+  @apply transition-all hover:-translate-y-0.5 hover:shadow-md dark:hover:shadow-xl;
+}
+
+/* ========================================
+   BADGES
+   ======================================== */
+
+.badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+    bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300;
+}
+
+.badge-accent {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+    bg-accent text-white dark:bg-accent-600;
+}
+
+/* ========================================
+   DIVIDERS
+   ======================================== */
+
+.divider {
+  @apply border-t border-gray-200 dark:border-gray-700;
+}
+
+.divider-accent {
+  @apply border-t-2 border-accent dark:border-accent-600;
+}
+
+/* ========================================
+   TEXTE
+   ======================================== */
+
+.text-body {
+  @apply text-sm sm:text-base leading-relaxed text-gray-600 dark:text-gray-400;
+}
+
+.text-body-sm {
+  @apply text-xs sm:text-sm leading-relaxed text-gray-600 dark:text-gray-400;
+}
+
+.title {
+  @apply font-serif font-bold text-gray-900 dark:text-white;
+}
+
+.title-lg {
+  @apply font-serif text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white;
+}
+
+.title-md {
+  @apply font-serif text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white;
+}
+
+.title-sm {
+  @apply font-serif text-lg sm:text-xl font-bold text-gray-900 dark:text-white;
+}
+
+.link {
+  @apply text-primary dark:text-accent-400
+    hover:text-primary-700 dark:hover:text-accent-300
+    underline-offset-2 hover:underline transition-colors;
+}
+
+/* ========================================
+   FORMULAIRES
+   ======================================== */
+
+.input {
+  @apply w-full px-4 py-2.5 rounded-lg
+    border border-gray-300 dark:border-gray-700
+    bg-white dark:bg-gray-800
+    text-gray-900 dark:text-white
+    placeholder-gray-400 dark:placeholder-gray-500
+    transition-colors
+    focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary;
+}
+
+.form-label {
+  @apply block mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-300;
+}
+
+}

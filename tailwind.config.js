@@ -1,62 +1,137 @@
 /**
- * tailwind.config.js
+ * tailwind.config.js - NOUVELLE PALETTE DE COULEURS
  * 
- * Ce fichier configure Tailwind CSS pour le projet
+ * Couleurs inspirées de: https://www.colorz.live/213016-2ed5c0-e3efde-126700-5e722c
  * 
- * Tailwind = framework CSS qui fournit des classes toutes faites
- * Exemple: bg-white = background: white
- *          text-gray-900 = color: #111827
- *          rounded-lg = border-radius: 0.5rem
+ * 🎨 Palette:
+ * - #213016 Vert très foncé (montagne profonde)
+ * - #2ed5c0 Turquoise/Cyan (accent moderne, eau)
+ * - #e3efde Beige clair (fond naturel)
+ * - #126700 Vert forestier (principal)
+ * - #5e722c Olive/Kaki (secondaire, terre)
  */
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // Fichiers à analyser pour les classes utilisées
   content: [
-    './app/**/*.{js,ts,jsx,tsx}',           // Tous les fichiers dans /app
-    './components/**/*.{js,ts,jsx,tsx}',    // Tous les fichiers dans /components
-    './lib/**/*.{js,ts,jsx,tsx}',          // Tous les fichiers dans /lib
+    './app/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './lib/**/*.{js,ts,jsx,tsx}',
   ],
 
+  darkMode: 'class',
+
   theme: {
-    // Étendre les thème par défaut de Tailwind
     extend: {
       /**
+       * ========================================
        * COULEURS PERSONNALISÉES
+       * ========================================
        * 
-       * On définit ici les couleurs du gîte
-       * Cela permet de les utiliser partout avec:
-       * - bg-primary = fond vert
-       * - text-primary = texte vert
-       * - hover:bg-primary-dark = fond vert foncé au survol
+       * Palette naturelle + moderne
+       * Light mode + Dark mode variants
        */
       colors: {
-        // Vert naturel (montagne) = couleur primaire
+        
+        /**
+         * PRIMARY - Vert forestier principal
+         * #126700 (vert profond)
+         * Usage: Boutons, links, accents
+         */
         primary: {
-          DEFAULT: '#1a7e5c',      // Vert principal
-          dark: '#0f5439',         // Vert foncé (survol)
-          light: '#2a9f7a',        // Vert clair
-          50: '#f0f8f4',           // Très pâle
+          50: '#f0f7f3',
+          100: '#d9f0e8',
+          200: '#b3e1d4',
+          300: '#7bc9b8',
+          400: '#52b39e',
+          500: '#2e9e86',
+          600: '#1e8b72',
+          DEFAULT: '#126700',      // Vert forestier principal
+          700: '#0f5a3d',
+          800: '#0a3d27',
+          900: '#052616',
+          
+          // Dark mode variants
+          'dark-50': '#052616',
+          'dark-100': '#0a3d27',
+          'dark-200': '#0f5a3d',
+          'dark-light': '#52b39e',
         },
 
-        // Marron naturel (pierre, bois) = couleur secondaire
+        /**
+         * SECONDARY - Olive/Kaki
+         * #5e722c (terre, nature)
+         * Usage: Texte secondaire, backgrounds
+         */
         secondary: {
-          DEFAULT: '#8b7355',
-          dark: '#6b5444',
-          light: '#a88f6d',
+          50: '#f9faf4',
+          100: '#f1f4e6',
+          200: '#e3e9ce',
+          300: '#c9d499',
+          DEFAULT: '#5e722c',      // Olive principal
+          600: '#4a5a23',
+          700: '#3a461a',
+          800: '#2a3412',
+          900: '#1a220a',
+          
+          'dark-light': '#c9d499',
         },
 
-        // Doré (accent, lumière)
+        /**
+         * ACCENT - Turquoise/Cyan moderne
+         * #2ed5c0 (eau, fraîcheur, moderne)
+         * Usage: Highlights, CTAs, special elements
+         */
         accent: {
-          DEFAULT: '#d4a574',
-          dark: '#b88a54',
-          light: '#ddb892',
+          50: '#f0fdfb',
+          100: '#ccfaf4',
+          200: '#99f5eb',
+          300: '#66f0e0',
+          400: '#33ebd5',
+          DEFAULT: '#2ed5c0',      // Turquoise principal
+          600: '#1ba88f',
+          700: '#0d7a5f',
+          800: '#054d40',
+          900: '#022620',
         },
 
-        // Beige clair (fond)
-        neutral: '#f5f5f0',
+        /**
+         * DARK FOREST - Vert très foncé
+         * #213016 (fond sombre, nuit)
+         * Usage: Dark mode backgrounds
+         */
+        'dark-forest': {
+          50: '#f6f8f5',
+          100: '#e8eee5',
+          200: '#d1ddd0',
+          300: '#b5c8b0',
+          400: '#94a885',
+          500: '#7a8d6a',
+          600: '#5e722c',
+          DEFAULT: '#213016',      // Très foncé
+          800: '#182410',
+          900: '#0f1609',
+        },
 
-        // Grises (texte, borders)
+        /**
+         * NEUTRAL - Beige clair
+         * #e3efde (fond lumière, naturel)
+         * Usage: Page backgrounds, cards
+         */
+        neutral: {
+          50: '#fafbf9',
+          100: '#f5f8f2',
+          200: '#ecf1e9',
+          300: '#e3efde',
+          DEFAULT: '#e3efde',
+          400: '#d0dcc8',
+          500: '#bcc8b8',
+          600: '#a8b49a',
+        },
+
+        /**
+         * GRAYS - Nuances de gris
+         */
         gray: {
           50: '#f9fafb',
           100: '#f3f4f6',
@@ -68,29 +143,23 @@ module.exports = {
           700: '#374151',
           800: '#1f2937',
           900: '#111827',
+          950: '#030712',
         },
       },
 
       /**
        * TYPOGRAPHIE
-       * 
-       * Définit les polices du site
        */
       fontFamily: {
-        // Sans-serif = texte normal (navigation, paragraphes)
         sans: [
           '"Inter"',
           '"Segoe UI"',
           'sans-serif',
         ],
-
-        // Serif = titres élégants (accueil, h1, h2)
         serif: [
           '"Playfair Display"',
           'serif',
         ],
-
-        // Monospace = code
         mono: [
           '"Fira Code"',
           'monospace',
@@ -99,31 +168,24 @@ module.exports = {
 
       /**
        * TAILLES DE POLICE
-       * 
-       * Permet d'utiliser text-xs, text-sm, text-base, text-lg, etc.
        */
       fontSize: {
-        xs: '0.75rem',      // 12px
-        sm: '0.875rem',     // 14px
-        base: '1rem',       // 16px
-        lg: '1.125rem',     // 18px
-        xl: '1.25rem',      // 20px
-        '2xl': '1.5rem',    // 24px
-        '3xl': '1.875rem',  // 30px
-        '4xl': '2.25rem',   // 36px
-        '5xl': '3rem',      // 48px
-        '6xl': '3.75rem',   // 60px
+        xs: '0.75rem',
+        sm: '0.875rem',
+        base: '1rem',
+        lg: '1.125rem',
+        xl: '1.25rem',
+        '2xl': '1.5rem',
+        '3xl': '1.875rem',
+        '4xl': '2.25rem',
+        '5xl': '3rem',
+        '6xl': '3.75rem',
       },
 
       /**
-       * ESPACEMENTS (padding, margin, gap)
-       * 
-       * p-4 = padding: 1rem (16px)
-       * m-6 = margin: 1.5rem (24px)
-       * gap-8 = gap: 2rem (32px)
+       * ESPACEMENTS
        */
       spacing: {
-        // Valeurs ajoutées aux espacements par défaut
         '13': '3.25rem',
         '15': '3.75rem',
         '17': '4.25rem',
@@ -131,26 +193,20 @@ module.exports = {
       },
 
       /**
-       * RAYONS DE BORDURE (border-radius)
-       * 
-       * rounded-lg = border-radius: 0.5rem
-       * rounded-xl = border-radius: 0.75rem
+       * RAYONS DE BORDURE
        */
       borderRadius: {
-        sm: '0.25rem',      // 4px
-        DEFAULT: '0.375rem', // 6px
-        md: '0.375rem',     // 6px
-        lg: '0.5rem',       // 8px
-        xl: '0.75rem',      // 12px
-        '2xl': '1rem',      // 16px
-        '3xl': '1.5rem',    // 24px
+        sm: '0.25rem',
+        DEFAULT: '0.375rem',
+        md: '0.375rem',
+        lg: '0.5rem',
+        xl: '0.75rem',
+        '2xl': '1rem',
+        '3xl': '1.5rem',
       },
 
       /**
-       * OMBRES (shadow)
-       * 
-       * shadow-md = ombre moyenne
-       * shadow-lg = grosse ombre
+       * OMBRES
        */
       boxShadow: {
         xs: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
@@ -159,12 +215,12 @@ module.exports = {
         md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
         lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
         xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        'dark-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.3)',
+        'dark-md': '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
       },
 
       /**
        * ANIMATIONS
-       * 
-       * Permet des animations fluides (futur)
        */
       animation: {
         fadeIn: 'fadeIn 0.3s ease-in-out',
@@ -173,8 +229,6 @@ module.exports = {
 
       /**
        * KEYFRAMES
-       * 
-       * Définit les animations personnalisées
        */
       keyframes: {
         fadeIn: {
@@ -189,56 +243,71 @@ module.exports = {
     },
   },
 
-  /**
-   * PLUGINS
-   * 
-   * Extensions Tailwind
-   */
   plugins: [],
-
-  /**
-   * MODE SOMBRE (optionnel)
-   * 
-   * Si tu veux un mode sombre plus tard
-   */
-  darkMode: 'class', // ou 'media'
 };
 
 /**
- * ⭐ COMMENT UTILISER
+ * ⭐ PALETTE DÉTAILLÉE
  * 
- * Classes Tailwind courantes:
+ * 🎨 PRIMAIRE (Vert forestier)
+ * #126700 - Boutons, liens, accents principaux
+ * Usage: CTA, hover states, active states
  * 
- * === COULEURS ===
- * bg-primary = fond vert
- * text-primary = texte vert
- * border-primary = bordure verte
- * hover:bg-primary-dark = fond vert foncé au survol
+ * 🌿 SECONDAIRE (Olive/Kaki)
+ * #5e722c - Texte secondaire, backgrounds subtils
+ * Usage: Descriptions, sous-titres, nuances
  * 
- * === ESPACEMENTS ===
- * p-4 = padding 16px de tous les côtés
- * m-6 = margin 24px de tous les côtés
- * py-8 = padding vertical (haut/bas) 32px
- * px-6 = padding horizontal (gauche/droite) 24px
- * gap-4 = espace entre enfants 16px
+ * 💎 ACCENT (Turquoise/Cyan)
+ * #2ed5c0 - Highlights, éléments spéciaux
+ * Usage: Badges, special CTAs, modern touches
  * 
- * === DISPOSITION ===
- * flex = affichage flexible (côte à côte)
- * grid = grille
- * hidden = invisible
- * md:flex = flex sur medium écrans+
+ * 🌲 DARK FOREST (Vert très foncé)
+ * #213016 - Fonds sombres, dark mode
+ * Usage: Dark backgrounds, header footer
  * 
- * === TEXTE ===
- * text-lg = police 18px
- * font-semibold = gras moyen
- * text-center = centré
+ * 🍃 NEUTRAL (Beige clair)
+ * #e3efde - Fonds clairs, naturels
+ * Usage: Page backgrounds, cards light
  * 
- * === RAYONS ===
- * rounded-lg = coins arrondis
+ * ========================================
+ * COMMENT UTILISER
+ * ========================================
  * 
- * === OMBRES ===
- * shadow-md = ombre moyenne
+ * === BOUTONS PRIMAIRES ===
+ * bg-primary hover:bg-primary-700
+ * dark:bg-primary-dark-light dark:hover:bg-primary
  * 
- * Tous ces éléments s'écrivent directement dans className=""
- * Exemple: className="bg-primary text-white px-6 py-3 rounded-lg"
+ * === TEXTE SECONDAIRE ===
+ * text-secondary-600
+ * dark:text-secondary-light
+ * 
+ * === HIGHLIGHTS ===
+ * bg-accent text-white
+ * dark:bg-accent-600
+ * 
+ * === FONDS ===
+ * Light: bg-neutral
+ * Dark: dark:bg-dark-forest
+ * 
+ * === EXEMPLE COMPLET ===
+ * className="
+ *   bg-neutral dark:bg-dark-forest
+ *   text-primary dark:text-accent-400
+ *   border border-secondary-200 dark:border-primary-800
+ *   hover:bg-primary-50 dark:hover:bg-primary-900
+ * "
+ * 
+ * ========================================
+ * DARK MODE STRATEGY
+ * ========================================
+ * 
+ * Light Mode:
+ * - Fond: neutral (#e3efde) ou white
+ * - Texte: primary ou secondary
+ * - Accents: accent (turquoise)
+ * 
+ * Dark Mode:
+ * - Fond: dark-forest (#213016) ou gray-900
+ * - Texte: white ou accent-300
+ * - Accents: accent (turquoise shine)
  */

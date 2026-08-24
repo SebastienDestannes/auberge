@@ -47,7 +47,7 @@ const playfair = Playfair_Display({
  */
 export const metadata: Metadata = {
   title: "L'Escolan - Gîte de montagne & Carrefour de randonnée en Ariège",
-  description: "L'Escolan est un gîte authentique en vallée d'Ustou. Point de départ de 5 grands sentiers pyrénéens. Demi-pension ou location en gestion libre.",
+  description: "L'Escolan est un gîte authentique en vallée d'Ustou. Point de départ de 4 grands sentiers pyrénéens. Demi-pension ou location en gestion libre.",
   keywords: "gîte ariège, randonnée pyrénées, GR10, Hexatrek, HRP, vallée ustou",
   openGraph: {
     title: "L'Escolan - Gîte & Carrefour de randonnée",
@@ -76,7 +76,7 @@ interface RootLayoutProps {
  */
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="fr" className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="fr" data-scroll-behavior="smooth" className={`${inter.variable} ${playfair.variable}`}>
       {/* <head>: Métadonnées du site (géré par Next.js automatiquement) */}
       <head>
         {/* Favicon emoji */}

@@ -222,35 +222,55 @@ function ReseauxSection() {
   );
 }
 
+// Coordonnées du gîte (Bidous, 09140 Ustou, Ariège) — mêmes que sur /randonnees
+const GITE_LAT = 42.7827177;
+const GITE_LNG = 1.2695034;
+const GITE_MAPS_LINK = 'https://maps.app.goo.gl/sJW1QAKQxoRv9UZJA';
+
 /**
  * ========================================
  * 4. SECTION CARTE
  * ========================================
- * 
- * Localisation sur carte (placeholder)
+ *
+ * Carte Google Maps interactive (iframe, sans clé API)
  */
 function MapSection() {
+  const mapEmbedSrc = `https://www.google.com/maps?q=${GITE_LAT},${GITE_LNG}(${encodeURIComponent("Gîte L'Escolan")})&z=15&output=embed`;
+
   return (
     <section className="py-12 sm:py-16 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mb-8 sm:mb-10 text-center">
           Localisation
         </h2>
-        
-        {/* Placeholder pour carte Google Maps (à intégrer) */}
-        <div className="bg-gray-100 rounded-2xl border-2 border-gray-300 overflow-hidden h-96 sm:h-[500px] flex items-center justify-center">
-          <div className="text-center">
-            <MapPin size={48} className="text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600 text-base sm:text-lg font-medium">
-              Carte interactive
-            </p>
-            <p className="text-gray-500 text-xs sm:text-sm mt-2">
-              (À intégrer: Google Maps ou OpenStreetMap)
-            </p>
-          </div>
+
+        {/* Carte Google Maps interactive */}
+        <div className="bg-gray-100 rounded-2xl border-2 border-gray-300 overflow-hidden h-96 sm:h-[500px]">
+          <iframe
+            src={mapEmbedSrc}
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Localisation du Gîte L'Escolan sur Google Maps"
+          />
         </div>
-        
+
+        <div className="mt-4 text-center">
+          <a
+            href={GITE_MAPS_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-700 text-sm font-medium"
+          >
+            <MapPin size={14} />
+            Ouvrir dans Google Maps (itinéraire)
+          </a>
+        </div>
+
         {/* Info pratiques accès */}
         <div className="mt-8 sm:mt-12 bg-blue-50 border-l-4 border-blue-600 p-6 sm:p-8 rounded-r-lg">
           <h3 className="font-bold text-gray-900 mb-4 text-lg">
@@ -394,10 +414,9 @@ export default function ContactPage() {
  *    - Tous les contacts (mail, tél, adresse)
  *    - Horaires clairs
  *    - Réseaux sociaux
- *    - Map placeholder (à intégrer Google/OSM)
- * 
+ *    - Carte Google Maps interactive (iframe embed, sans clé API)
+ *
  * 3. À AJOUTER PLUS TARD:
- *    - Intégrer vraie carte (Google Maps API)
  *    - Liens réseaux sociaux actifs
  *    - Webcam en direct (si disponible)
  * 

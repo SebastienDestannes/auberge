@@ -195,8 +195,8 @@ function RandosCTASection() {
         </h2>
         <p className="text-gray-700 mb-6 text-sm sm:text-base leading-relaxed">
           L'Escolan est un carrefour unique pour la randonnée pyrénéenne. 
-          <strong> 5 grands sentiers</strong> passent par ou partent d'ici: 
-          GR10, Hexatrek, HRP, GRP et Muntanya de la libertat.
+          <strong> 4 grands sentiers</strong> passent par ou partent d'ici: 
+          GR10, Hexatrek, HRP et Muntanya de la libertat.
         </p>
         <p className="text-gray-700 mb-8 text-sm sm:text-base leading-relaxed">
           Découvrez tous les détails sur nos sentiers, consultez les tracés interactifs 

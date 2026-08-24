@@ -1,54 +1,32 @@
 /**
- * globals.css - Tailwind v4 compatible
- * 
- * ✅ Compatible @tailwindcss/postcss (Tailwind v4)
- * ✅ Pas de @layer (cause erreurs en v4)
- * ✅ CSS pur + variables CSS
- * ✅ Limite largeur desktop avec CSS pur
+ * app/globals.css
+ *
+ * Point d'entrée Tailwind v4 + design tokens + classes composants,
+ * suivi d'un reset global minimal (pas de duplication avec
+ * styles/components.css).
  */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@import './styles/theme.css';
+@import './styles/components.css';
+
+/*
+ * Tout le reset ci-dessous est déclaré dans @layer base : cela garantit
+ * que les classes de components.css (@layer components) et les
+ * utilitaires Tailwind gardent la priorité en cas de conflit (ex: la
+ * couleur de texte des boutons vs. la règle globale `a`/`a:hover`).
+ */
+@layer base {
 
 /* ========================================
-   VARIABLES CSS GLOBALES
+   RESET
    ======================================== */
 
-:root {
-  /* Couleurs de base */
-  --background: #ffffff;
-  --foreground: #171717;
-  
-  /* Couleurs L'Escolan */
-  --color-green: #1a7e5c;
-  --color-green-light: #2d9a6e;
-  --color-brown: #8b7355;
-  --color-gold: #d4a574;
-  
-  /* Polices */
-  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-playfair: 'Playfair Display', 'Georgia', serif;
-  
-  /* Layout */
-  --max-width: 1200px;
-  --padding-mobile: 1rem;
-  --padding-desktop: 2rem;
-}
-
-/* Mode sombre */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-/* ========================================
-   RESET & STYLES DE BASE
-   ======================================== */
-
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -57,137 +35,51 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-inter);
   margin: 0;
-  padding: 0;
-  line-height: 1.6;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ========================================
+   TYPOGRAPHIE GLOBALE
+   ======================================== */
+
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-playfair);
+  font-family: var(--font-serif);
   font-weight: 600;
   line-height: 1.2;
   margin-top: 0;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+p {
+  line-height: 1.6;
 }
 
 a {
-  color: var(--color-green);
+  color: var(--color-primary);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color var(--transition-fast);
 }
 
 a:hover {
-  color: var(--color-green-light);
+  color: var(--color-primary-hover);
 }
 
 /* ========================================
-   CONTAINER - LIMITE LARGEUR DESKTOP
+   IMAGES
    ======================================== */
 
-/**
- * Classe universelle pour limiter la largeur
- * Utiliser: className="container" sur les sections
- * 
- * ✅ Full width mobile
- * ✅ Max 1200px desktop
- * ✅ Centré automatiquement
- */
-.container {
-  width: 100%;
-  max-width: var(--max-width);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: var(--padding-mobile);
-  padding-right: var(--padding-mobile);
-}
-
-@media (min-width: 768px) {
-  .container {
-    padding-left: var(--padding-desktop);
-    padding-right: var(--padding-desktop);
-  }
-}
-
-/* ========================================
-   TYPOGRAPHIE PERSONNALISÉE
-   ======================================== */
-
-.font-serif {
-  font-family: var(--font-playfair);
-}
-
-.font-sans {
-  font-family: var(--font-inter);
-}
-
-/* ========================================
-   ANIMATIONS
-   ======================================== */
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.6s ease-out;
-}
-
-/* ========================================
-   RESPONSIVE HELPERS
-   ======================================== */
-
-.hidden-mobile {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .hidden-mobile {
-    display: block;
-  }
-}
-
-.hidden-desktop {
+img, picture, video, canvas, svg {
   display: block;
-}
-
-@media (min-width: 768px) {
-  .hidden-desktop {
-    display: none;
-  }
+  max-width: 100%;
+  height: auto;
 }
 
 /* ========================================
-   SCROLLBAR PERSONNALISÉE
+   SCROLLBAR
    ======================================== */
 
 ::-webkit-scrollbar {
@@ -196,34 +88,29 @@ a:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: var(--color-bg-alt);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-green);
-  border-radius: 5px;
+  background: var(--color-primary);
+  border-radius: var(--radius-sm);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-green-light);
+  background: var(--color-primary-hover);
 }
 
 * {
-  scrollbar-color: var(--color-green) var(--background);
+  scrollbar-color: var(--color-primary) var(--color-bg-alt);
   scrollbar-width: thin;
 }
 
 /* ========================================
-   SELECTION TEXT
+   SÉLECTION DE TEXTE
    ======================================== */
 
 ::selection {
-  background-color: var(--color-green);
-  color: white;
-}
-
-::-moz-selection {
-  background-color: var(--color-green);
+  background-color: var(--color-primary);
   color: white;
 }
 
@@ -232,7 +119,7 @@ a:hover {
    ======================================== */
 
 :focus-visible {
-  outline: 2px solid var(--color-green);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
@@ -241,27 +128,49 @@ a:hover {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
 /* ========================================
-   INPUTS & FORMULAIRES
+   INPUTS
    ======================================== */
 
 input::placeholder,
 textarea::placeholder {
-  color: rgba(0, 0, 0, 0.4);
+  color: var(--color-gray-400);
 }
 
 input:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--color-green);
-  box-shadow: 0 0 0 3px rgba(26, 126, 92, 0.1);
 }
 
 /* ========================================
-   PRINT STYLES
+   LISTES, CITATIONS, CODE
+   ======================================== */
+
+ul, ol {
+  padding-left: 1.25rem;
+}
+
+blockquote {
+  border-left: 4px solid var(--color-border);
+  padding-left: var(--space-md);
+  font-style: italic;
+  color: var(--color-fg-muted);
+}
+
+code {
+  font-family: var(--font-mono);
+  background: var(--color-bg-alt);
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875em;
+}
+
+/* ========================================
+   PRINT
    ======================================== */
 
 @media print {
@@ -276,38 +185,19 @@ textarea:focus {
 }
 
 /* ========================================
-   DEBUG MODE (À décommenter pour debug)
+   LEAFLET — étiquette du gîte sur la carte
    ======================================== */
 
-/*
-body::before {
-  content: 'mobile';
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  background: var(--color-green);
+.rando-map-gite-label {
+  background: var(--color-primary);
   color: white;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 12px;
-  z-index: 9999;
+  font-weight: 600;
+  border: none;
+  box-shadow: var(--shadow-md);
 }
 
-@media (min-width: 640px) {
-  body::before {
-    content: 'sm: 640px';
-  }
+.rando-map-gite-label::before {
+  border-top-color: var(--color-primary);
 }
 
-@media (min-width: 768px) {
-  body::before {
-    content: 'md: 768px';
-  }
 }
-
-@media (min-width: 1024px) {
-  body::before {
-    content: 'lg: 1024px';
-  }
-}
-*/
