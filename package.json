@@ -1,0 +1,57 @@
+{
+  "name": "escolan-website",
+  "version": "1.0.0",
+  "description": "Refonte moderne du site du Gîte L'Escolan en Ariège",
+  "homepage": "https://lescolan.com",
+  "author": {
+    "name": "Nours",
+    "email": "contact@escolan.com"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "next": "^16.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "autoprefixer": "^10.5.4",
+    "eslint": "^10.9.0",
+    "eslint-config-next": "^16.3.2",
+    "postcss": "^8.5.26",
+    "prettier": "^3.9.6",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2"
+  },
+  "optionalDependencies": {
+    "framer-motion": "^13.1.1",
+    "lucide-react": "^1.33.0",
+    "react-icons": "^5.7.0",
+    "resend": "^6.22.0",
+    "zod": "^4.4.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "gite",
+    "ariege",
+    "montagne",
+    "nature",
+    "randonnee",
+    "next.js",
+    "react",
+    "tailwind"
+  ]
+}
