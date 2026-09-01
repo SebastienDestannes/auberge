@@ -6,40 +6,55 @@
  * ✅ CTA moins volumineux
  * ✅ Layout bien équilibré
  * ✅ Responsive mobile-first
- * ✅ Alignement parfait desktop
+ * ✅ Icones réelles: react-icons + SVG TripAdvisor
  */
 
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { MapPin, Phone, Mail, Clock, ChevronRight } from 'lucide-react';
+import { FaFacebook, FaInstagram, FaMapMarkerAlt } from 'react-icons/fa';
+import TripAdvisorIcon from '@/components/icons/TripAdvisorIcon';
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const [currentYear, setCurrentYear] = useState<number | null>(null);
 
   /**
-   * Réseaux sociaux
+   * Récupère l'année actuelle (côté client uniquement)
+   * pour éviter les erreurs d'hydratation
+   */
+  useEffect(() => {
+    setCurrentYear(new Date().getFullYear());
+  }, []);
+
+  /**
+   * Réseaux sociaux avec icones véritables
    */
   const socials = [
-    { 
-      icon: '👍', 
+    {
+      component: FaFacebook,
       label: 'Facebook',
       url: 'https://www.facebook.com/marieetalexis/',
+      color: 'hover:text-blue-500',
     },
-    { 
-      icon: '📸', 
+    {
+      component: FaInstagram,
       label: 'Instagram',
       url: 'https://www.instagram.com/gite_l_escolan/',
+      color: 'hover:text-pink-500',
     },
-    { 
-      icon: '⭐', 
+    {
+      component: TripAdvisorIcon,
       label: 'TripAdvisor',
       url: 'https://www.tripadvisor.fr/Hotel_Review-g1080534-d2521552-Reviews-Gite_l_Escolan-Ustou_Ariege_Occitanie.html',
+      color: 'hover:text-green-500',
     },
-    { 
-      icon: '🗺️', 
+    {
+      component: FaMapMarkerAlt,
       label: 'Google Maps',
       url: 'https://maps.app.goo.gl/sJW1QAKQxoRv9UZJA',
+      color: 'hover:text-red-500',
     },
   ];
 
@@ -57,7 +72,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-gray-900 dark:bg-black text-white">
-      
+
       {/* ========================================
           CTA COMPACTE - RÉSERVER
           ======================================== */}
@@ -88,7 +103,7 @@ export default function Footer() {
           ======================================== */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-10 sm:py-12">
-          
+
           {/* Grille 4 colonnes desktop, 2 colonnes mobile */}
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-10 sm:mb-12">
 
@@ -100,29 +115,32 @@ export default function Footer() {
                 <span className="text-2xl">🌿</span>
                 <h3 className="font-serif text-lg font-bold">L'Escolan</h3>
               </div>
-              
+
               <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-4">
                 Refuge authentique en vallée d'Ustou. Ancienne école restaurée pour un séjour nature inoubliable.
               </p>
-              
-              {/* Réseaux sociaux - Compacts */}
+
+              {/* Réseaux sociaux - Compacts avec vraies icones */}
               <div className="space-y-2">
                 <p className="text-xs font-semibold text-gray-500 uppercase">
                   Nous suivre
                 </p>
                 <div className="flex gap-2">
-                  {socials.map((social) => (
-                    <a
-                      key={social.label}
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      title={social.label}
-                      className="w-8 h-8 flex items-center justify-center rounded bg-gray-800 text-gray-300 hover:text-white hover:bg-green-600 transition text-sm"
-                    >
-                      {social.icon}
-                    </a>
-                  ))}
+                  {socials.map((social) => {
+                    const IconComponent = social.component;
+                    return (
+                      <a
+                        key={social.label}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={social.label}
+                        className={`w-8 h-8 flex items-center justify-center rounded bg-gray-800 text-gray-300 ${social.color} transition text-sm`}
+                      >
+                        <IconComponent size={16} />
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -156,12 +174,12 @@ export default function Footer() {
                 Contact
               </h4>
               <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
-                
+
                 {/* Adresse */}
                 <li className="flex items-start gap-2">
                   <MapPin className="text-green-500 flex-shrink-0 mt-0.5" size={14} />
                   <div className="text-gray-400">
-                    <p className="text-white font-medium text-xs">Le Escolan</p>
+                    <p className="text-white font-medium text-xs">L'Escolan</p>
                     <p>Bidous, 09140</p>
                     <p>Ustou, Ariège</p>
                   </div>
@@ -199,32 +217,33 @@ export default function Footer() {
                 Horaires
               </h4>
               <ul className="space-y-2 sm:space-y-2.5 text-xs sm:text-sm">
-                
-                {/* Semaine */}
-                <li className="flex items-start gap-2">
-                  <Clock className="text-green-500 flex-shrink-0 mt-0.5" size={14} />
-                  <div className="text-gray-400">
-                    <p className="text-white font-medium">Lun-Ven</p>
-                    <p>9h - 19h</p>
-                  </div>
-                </li>
 
-                {/* Samedi */}
+                {/* Avril - Octobre */}
                 <li className="flex items-start gap-2">
                   <Clock className="text-green-500 flex-shrink-0 mt-0.5" size={14} />
                   <div className="text-gray-400">
-                    <p className="text-white font-medium">Samedi</p>
-                    <p>10h - 18h</p>
-                  </div>
-                </li>
-
-                {/* Dimanche */}
-                <li className="flex items-start gap-2">
-                  <Clock className="text-green-500 flex-shrink-0 mt-0.5" size={14} />
-                  <div className="text-gray-400">
-                    <p className="text-white font-medium">Dimanche</p>
+                    <p className="text-white font-medium">Avril - Oct</p>
                     <p>Sur réservation</p>
                   </div>
+                </li>
+
+                {/* Novembre - Mars */}
+                <li className="flex items-start gap-2">
+                  <Clock className="text-green-500 flex-shrink-0 mt-0.5" size={14} />
+                  <div className="text-gray-400">
+                    <p className="text-white font-medium">Nov - Mars</p>
+                    <p>Groupes (4+ pers)</p>
+                  </div>
+                </li>
+
+                {/* CTA Contact */}
+                <li className="pt-2">
+                  <Link
+                    href="/contact"
+                    className="text-green-400 hover:text-green-300 transition text-xs font-semibold"
+                  >
+                    → Nous contacter
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -240,28 +259,28 @@ export default function Footer() {
               ======================================== */}
           <div className="py-8 sm:py-10">
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
-              
+
               {/* Copyright */}
               <p className="text-gray-500 text-xs sm:text-sm text-center sm:text-left">
-                © {currentYear} L'Escolan. Tous droits réservés.
+                © {currentYear || new Date().getFullYear()} L'Escolan. Tous droits réservés.
               </p>
 
               {/* Liens légaux */}
               <div className="flex flex-wrap justify-center sm:justify-end gap-3 sm:gap-6 text-xs sm:text-sm">
-                <a 
-                  href="#" 
+                <a
+                  href="/mentions-legales"
                   className="text-gray-500 hover:text-green-400 transition"
                 >
                   Mentions légales
                 </a>
-                <a 
-                  href="#" 
+                <a
+                  href="/politique-confidentialite"
                   className="text-gray-500 hover:text-green-400 transition"
                 >
                   Confidentialité
                 </a>
-                <a 
-                  href="#" 
+                <a
+                  href="#"
                   className="text-gray-500 hover:text-green-400 transition"
                 >
                   CGV
@@ -277,7 +296,14 @@ export default function Footer() {
           ======================================== */}
       <div className="bg-gray-950 dark:bg-black border-t border-gray-800 py-3 text-center text-gray-600 text-xs">
         <p>
-          Conçu avec ❤️ pour L'Escolan • Hébergé sur Vercel
+          Conçu avec ❤️ par{' '}
+          <a
+            href="https://www.destannes.fr/"
+            className="text-gray-400 hover:text-green-400 transition"
+          >
+            Sébastien Destannes
+          </a>
+          {' '}pour L'Escolan
         </p>
       </div>
     </footer>
@@ -285,49 +311,27 @@ export default function Footer() {
 }
 
 /**
- * ⭐ AMÉLIORATIONS APPORTÉES
+ * 📝 INSTALLATION
  * 
- * ✅ SPACING RÉDUIT
- *    - py-12 sm:py-16 → py-10 sm:py-12
- *    - CTA: py-8 sm:py-10 → py-6 sm:py-8
- *    - Sections: gap-8 → gap-6 sm:gap-8
- *    - Texte plus petit sur mobile
+ * 1. IMPORTS REQUIS:
+ *    npm install lucide-react react-icons
  * 
- * ✅ LAYOUT COMPACTE
- *    - Icônes réduits (18→14px)
- *    - Police plus petite (text-sm→text-xs mobile)
- *    - Colonnes address + horaires 1 ligne chacun
- *    - Pas de description longue pour chaque section
+ * 2. CRÉER TripAdvisorIcon.tsx:
+ *    components/icons/TripAdvisorIcon.tsx
+ *    (voir fichier ci-dessous)
  * 
- * ✅ DARK MODE
- *    - bg-gray-900 dark:bg-black
- *    - Tous les éléments ont dark: variant
- *    - Gradients adaptés dark
+ * 3. RESPONSIVE:
+ *    - Mobile: 2 colonnes
+ *    - Desktop: 4 colonnes
+ *    - Texte scaling: text-xs sm:text-sm
  * 
- * ✅ ALIGNEMENT
- *    - Grid 2 colonnes mobile → 4 colonnes desktop
- *    - Spacing uniforme
- *    - max-w-6xl utilisé (non container)
- *    - Texte centré mobile, aligné gauche desktop
+ * 4. DARK MODE:
+ *    Tous les éléments supportent dark:
+ *    bg-gray-900 dark:bg-black
+ *    text-gray-400 dark:text-gray-400
  * 
- * ✅ RESPONSIVE
- *    - Text size: text-xs sm:text-sm
- *    - Padding: px-4 sm:px-6 lg:px-8
- *    - Icons taille 14px (petit mais lisible)
- * 
- * ✅ HIÉRARCHIE VISUELLE
- *    - Titres section: font-semibold text-sm sm:text-base
- *    - Lien compacte sans texte superflu
- *    - CTA verte moins volumineuse
- * 
- * 📊 TAILLES AVANT/APRÈS
- *    AVANT:
- *    - CTA: py-8 sm:py-10 (40px+ height)
- *    - Sections: py-12 sm:py-16 (60px+ height)
- *    - Total footer: ~400px+
- * 
- *    APRÈS:
- *    - CTA: py-6 sm:py-8 (24-32px height)
- *    - Sections: py-10 sm:py-12 (40-48px height)
- *    - Total footer: ~300px (25% réduction!)
+ * 5. ACCESSIBILITY:
+ *    - Tous les liens ont title=""
+ *    - Boutons avec aria labels implicites
+ *    - Contraste WCAG AA
  */

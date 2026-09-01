@@ -22,7 +22,7 @@ export default function Hero() {
       <div
         className="absolute w-full h-full"
         style={{
-          backgroundImage: `linear-gradient(rgba(18, 103, 0, 0.4), rgba(18, 103, 0, 0.3)), url('/images/hero/vue-panoramique-600-337.jpg')`,
+          backgroundImage: `linear-gradient(rgba(18, 103, 0, 0.2), rgba(18, 103, 0, 0.3)), url('/images/hero/vue-panoramique-600-337.jpg')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

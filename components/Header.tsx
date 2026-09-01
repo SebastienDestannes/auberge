@@ -1,25 +1,17 @@
-/**
- * components/Header.tsx
- *
- * Navigation fixe en haut de page.
- * Les classes visuelles viennent de app/styles/components.css
- * (voir .logo, .nav-link, .btn-header, etc.) — le JSX ne contient
- * plus de longues chaînes Tailwind.
- */
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
+import { FaFacebook, FaInstagram, FaMapMarkerAlt } from 'react-icons/fa';
+import TripAdvisorIcon from '@/components/icons/TripAdvisorIcon'; // ← Import!
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
-  // Adapte l'ombre du header une fois qu'on a scrollé
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -40,43 +32,15 @@ export default function Header() {
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href);
 
-  const socials = [
-    {
-      icon: '👍',
-      label: 'Facebook',
-      url: 'https://www.facebook.com/marieetalexis/',
-      title: 'Suivez-nous sur Facebook',
-    },
-    {
-      icon: '📸',
-      label: 'Instagram',
-      url: 'https://www.instagram.com/gite_l_escolan/',
-      title: 'Suivez-nous sur Instagram',
-    },
-    {
-      icon: '⭐',
-      label: 'TripAdvisor',
-      url: 'https://www.tripadvisor.fr/Hotel_Review-g1080534-d2521552-Reviews-Gite_l_Escolan-Ustou_Ariege_Occitanie.html',
-      title: 'Lisez nos avis TripAdvisor',
-    },
-    {
-      icon: '🗺️',
-      label: 'Google Maps',
-      url: 'https://maps.app.goo.gl/sJW1QAKQxoRv9UZJA',
-      title: 'Localisez-nous sur Google Maps',
-    },
-  ];
-
   return (
     <header
-      className={`fixed w-full z-50 bg-white dark:bg-gray-900 transition-shadow duration-300 ${
-        isScrolled ? 'shadow-md dark:shadow-dark-md' : 'shadow-sm dark:shadow-dark-sm'
-      }`}
+      className={`fixed w-full z-50 bg-white dark:bg-gray-900 transition-shadow duration-300 ${isScrolled ? 'shadow-md dark:shadow-dark-md' : 'shadow-sm dark:shadow-dark-sm'
+        }`}
     >
       <div className="container">
         <div className="flex justify-between items-center h-20">
 
-          {/* Logo */}
+          {/* LOGO */}
           <Link href="/" className="logo group">
             <div className="logo-icon">🌿</div>
             <div className="logo-text">
@@ -85,7 +49,7 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* Navigation desktop */}
+          {/* NAVIGATION DESKTOP */}
           <nav className="hidden lg:flex items-center space-x-1">
             {navItems.map((item) => (
               <Link
@@ -98,28 +62,59 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* Réseaux sociaux desktop */}
+          {/* RÉSEAUX SOCIAUX DESKTOP */}
           <div className="hidden lg:flex items-center space-x-2 ml-4 pl-4 border-l border-gray-200 dark:border-gray-700">
-            {socials.map((social) => (
-              <a
-                key={social.label}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={social.title}
-                className="social-icon"
-              >
-                {social.icon}
-              </a>
-            ))}
+            {/* Facebook */}
+            <a
+              href="https://www.facebook.com/marieetalexis/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Suivez-nous sur Facebook"
+              className="social-icon"
+            >
+              <FaFacebook size={20} />
+            </a>
+
+            {/* Instagram */}
+            <a
+              href="https://www.instagram.com/gite_l_escolan/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Suivez-nous sur Instagram"
+              className="social-icon"
+            >
+              <FaInstagram size={20} />
+            </a>
+
+            {/* TripAdvisor - NOTRE ICONE SVG */}
+            <a
+              href="https://www.tripadvisor.fr/Hotel_Review-g1080534-d2521552-Reviews-Gite_l_Escolan-Ustou_Ariege_Occitanie.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Lisez nos avis TripAdvisor"
+              className="social-icon"
+            >
+              <TripAdvisorIcon size={20} />
+            </a>
+
+            {/* Google Maps */}
+            <a
+              href="https://maps.app.goo.gl/sJW1QAKQxoRv9UZJA"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Localisez-nous sur Google Maps"
+              className="social-icon"
+            >
+              <FaMapMarkerAlt size={20} />
+            </a>
           </div>
 
-          {/* Bouton réservation desktop */}
+          {/* BOUTON RÉSERVATION DESKTOP */}
           <Link href="/hebergements" className="hidden lg:inline-flex btn-header ml-4">
             Réserver
           </Link>
 
-          {/* Menu burger mobile */}
+          {/* MENU BURGER MOBILE */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="menu-burger"
@@ -131,7 +126,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Menu mobile (dropdown) */}
+      {/* MENU MOBILE */}
       {isOpen && (
         <div className="lg:hidden bg-white dark:bg-gray-900 divider">
           <div className="container py-4 space-y-3">
@@ -157,29 +152,62 @@ export default function Header() {
               Réserver un séjour
             </Link>
 
+            {/* Réseaux sociaux mobile */}
             <div className="divider pt-3">
               <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-3">
                 Nous suivre
               </p>
               <div className="flex gap-3 flex-wrap">
-                {socials.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title={social.title}
-                    className="social-icon-mobile"
-                  >
-                    <span>{social.icon}</span>
-                    <span className="hidden sm:inline">{social.label}</span>
-                  </a>
-                ))}
+                <a
+                  href="https://www.facebook.com/marieetalexis/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Suivez-nous sur Facebook"
+                  className="social-icon-mobile"
+                >
+                  <FaFacebook size={20} />
+                  <span className="hidden sm:inline">Facebook</span>
+                </a>
+
+                <a
+                  href="https://www.instagram.com/gite_l_escolan/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Suivez-nous sur Instagram"
+                  className="social-icon-mobile"
+                >
+                  <FaInstagram size={20} />
+                  <span className="hidden sm:inline">Instagram</span>
+                </a>
+
+                {/* TripAdvisor SVG mobile */}
+                <a
+                  href="https://www.tripadvisor.fr/Hotel_Review-g1080534-d2521552-Reviews-Gite_l_Escolan-Ustou_Ariege_Occitanie.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Lisez nos avis TripAdvisor"
+                  className="social-icon-mobile"
+                >
+                  <TripAdvisorIcon size={20} />
+                  <span className="hidden sm:inline">TripAdvisor</span>
+                </a>
+
+                <a
+                  href="https://maps.app.goo.gl/sJW1QAKQxoRv9UZJA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Localisez-nous sur Google Maps"
+                  className="social-icon-mobile"
+                >
+                  <FaMapMarkerAlt size={20} />
+                  <span className="hidden sm:inline">Google Maps</span>
+                </a>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </header>
+            </div >
+          </div >
+        </div >
+      )
+      }
+    </header >
   );
 }

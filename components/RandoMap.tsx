@@ -135,7 +135,7 @@ export default function RandoMap({ trails, gite }: RandoMapProps) {
     <div>
       <div
         ref={mapContainerRef}
-        className="w-full h-96 sm:h-[500px] rounded-2xl"
+        className="w-full h-96 sm:h-[500px] rounded-2xl z-10"
       />
 
       <div className="mt-4 flex flex-wrap items-center gap-3">
